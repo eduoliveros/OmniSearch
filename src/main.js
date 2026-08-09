@@ -293,7 +293,15 @@ async function executeResourceAction(item) {
     await db.setItem('omnisearch_resources', resources);
   }
 
-  // If running in Tauri Desktop, use native OS shell open (for URLs, local folders, files, and deep links)
+  // 1. If targetType is 'text' (Texto, Email, Info), ONLY copy to clipboard (Desktop & Web)
+  if (targetType === 'text') {
+    await navigator.clipboard.writeText(target);
+    showToast(`Copiado al portapapeles: ${target}`, 'success');
+    closeCommandPalette();
+    return;
+  }
+
+  // 2. If running in Tauri Desktop, use native OS shell open (for URLs, local folders, files, and deep links)
   if (isTauriDesktop) {
     try {
       // Execute native Windows Shell via custom Rust command (0 regex limitations)
