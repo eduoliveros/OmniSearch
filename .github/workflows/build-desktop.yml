@@ -34,10 +34,16 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             src-tauri/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Update Cargo Dependencies
+        run: cargo update
+        working-directory: src-tauri
 
       - name: Build Tauri App
         run: npm run tauri build
