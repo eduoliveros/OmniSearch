@@ -6,18 +6,6 @@
   "permissions": [
     "core:default",
     "shell:default",
-    {
-      "identifier": "shell:allow-open",
-      "allow": [
-        {
-          "name": "allow-all-regex",
-          "path": ".*"
-        },
-        {
-          "name": "allow-all-glob",
-          "path": "**"
-        }
-      ]
-    }
+    "shell:allow-open-all"
   ]
 }
