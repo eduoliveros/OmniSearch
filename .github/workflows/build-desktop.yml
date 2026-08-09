@@ -25,19 +25,28 @@ jobs:
       - name: Install Rust Stable
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            src-tauri/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Web Dist
-        run: npm run build
+      - name: Build Tauri App
+        run: npm run tauri build
 
-      - name: Build Tauri Desktop App
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
         with:
-          tagName: v__VERSION__
-          releaseName: 'OmniSearch v__VERSION__'
-          releaseBody: 'OmniSearch Desktop App Release'
-          releaseDraft: true
-          prerelease: false
+          name: OmniSearch-Windows-Installer
+          path: |
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: warn
