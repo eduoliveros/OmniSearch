@@ -13,14 +13,14 @@
     "windows": [
       {
         "title": "OmniSearch",
-        "width": 780,
-        "height": 580,
-        "resizable": false,
+        "width": 850,
+        "height": 600,
+        "resizable": true,
         "fullscreen": false,
         "center": true,
-        "decorations": false,
-        "transparent": true,
-        "alwaysOnTop": true
+        "decorations": true,
+        "transparent": false,
+        "alwaysOnTop": false
       }
     ],
     "security": {
