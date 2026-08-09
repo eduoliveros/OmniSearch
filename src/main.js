@@ -402,7 +402,7 @@ function escapeHtml(str) {
 // EVENT LISTENERS
 // ==========================================================================
 
-// Global Keyboard Shortcut: Ctrl+K or Cmd+K
+// Local Keyboard Shortcut inside web app window: Ctrl+K or Cmd+K
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault();
@@ -413,6 +413,40 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// System-wide Global Windows Hotkey: Ctrl+K / Cmd+K (Invokes OmniSearch from ANY app in Windows)
+if (isTauriDesktop) {
+  Promise.all([
+    import('@tauri-apps/plugin-global-shortcut'),
+    import('@tauri-apps/api/window')
+  ]).then(async ([{ register, isRegistered }, { getCurrentWindow }]) => {
+    try {
+      const appWindow = getCurrentWindow();
+      const shortcut = 'CommandOrControl+K';
+      
+      const registered = await isRegistered(shortcut);
+      if (!registered) {
+        await register(shortcut, async (event) => {
+          if (event.state === 'Pressed') {
+            await appWindow.unminimize();
+            await appWindow.show();
+            await appWindow.setFocus();
+            if (paletteDialog.open) {
+              closeCommandPalette();
+            } else {
+              openCommandPalette();
+            }
+          }
+        });
+        console.log(`[OmniSearch] Atajo global registrado en Windows: ${shortcut}`);
+      }
+    } catch (err) {
+      console.warn('No se pudo registrar el atajo global de Windows:', err);
+    }
+  }).catch(err => {
+    console.warn('Error al cargar dependencias de global-shortcut:', err);
+  });
+}
 
 // Open Add Resource Dialog pre-filled with search query
 function openAddModalWithTitle(query) {
