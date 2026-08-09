@@ -296,36 +296,26 @@ async function executeResourceAction(item) {
   // If running in Tauri Desktop, use native OS shell open (for URLs, local folders, files, and deep links)
   if (isTauriDesktop) {
     try {
-      // 1. Primary: Custom Rust command (executes native Windows Shell with 0 regex restrictions)
+      // Execute native Windows Shell via custom Rust command (0 regex limitations)
       const { invoke } = await import('@tauri-apps/api/core');
       await invoke('open_target', { target });
       showToast(`Abriendo nativamente en Windows: ${title}`, 'success');
       closeCommandPalette();
       return;
     } catch (err) {
-      console.warn('Fallback a plugin-shell tras error en command:', err);
-      try {
-        // 2. Secondary: Plugin Shell open
-        const { open } = await import('@tauri-apps/plugin-shell');
-        await open(target);
-        showToast(`Abriendo nativamente en Windows: ${title}`, 'success');
-        closeCommandPalette();
-        return;
-      } catch (err2) {
-        console.warn('Error al abrir via Tauri Shell:', err2);
-        const errMsg = (err2 && typeof err2 === 'object' && err2.message) ? err2.message : String(err2);
-        
-        // 3. Fallback: Browser or Clipboard
-        if (targetType === 'url' || target.startsWith('http://') || target.startsWith('https://')) {
-          window.open(target, '_blank');
-          showToast(`Abriendo en navegador web: ${title}`, 'success');
-        } else {
-          await navigator.clipboard.writeText(target);
-          showToast(`Error al abrir (${errMsg}). Ruta copiada al portapapeles.`, 'info');
-        }
-        closeCommandPalette();
-        return;
+      console.warn('Error al ejecutar open_target command:', err);
+      const errMsg = (err && typeof err === 'object' && err.message) ? err.message : String(err);
+      
+      // Fallback: Browser or Clipboard
+      if (targetType === 'url' || target.startsWith('http://') || target.startsWith('https://')) {
+        window.open(target, '_blank');
+        showToast(`Abriendo en navegador web: ${title}`, 'success');
+      } else {
+        await navigator.clipboard.writeText(target);
+        showToast(`Error al abrir (${errMsg}). Ruta copiada al portapapeles.`, 'info');
       }
+      closeCommandPalette();
+      return;
     }
   }
 
