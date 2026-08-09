@@ -274,6 +274,9 @@ function getActionText(targetType) {
   }
 }
 
+// Detect if running in Tauri Desktop environment
+const isTauriDesktop = typeof window !== 'undefined' && (window.__TAURI_INTERNALS__ !== undefined || window.__TAURI__ !== undefined);
+
 // Execute Action when selected (Enter or Click)
 async function executeResourceAction(item) {
   const { target, targetType, title, id } = item;
@@ -286,6 +289,20 @@ async function executeResourceAction(item) {
     await db.setItem('omnisearch_resources', resources);
   }
 
+  // If running in Tauri Desktop, use native OS shell open
+  if (isTauriDesktop) {
+    try {
+      const { open } = await import('@tauri-apps/plugin-shell');
+      await open(target);
+      showToast(`Abriendo nativamente en Windows: ${title}`, 'success');
+      closeCommandPalette();
+      return;
+    } catch (err) {
+      console.warn('Fallback a comportamiento web:', err);
+    }
+  }
+
+  // Web Fallback (GitHub Pages)
   if (targetType === 'url') {
     window.open(target, '_blank');
     showToast(`Abriendo ${title}`, 'success');
