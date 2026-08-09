@@ -3,7 +3,7 @@ use std::process::Command;
 #[cfg(desktop)]
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 #[cfg(desktop)]
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 #[cfg(target_os = "windows")]
 use std::os::windows::process::CommandExt;
