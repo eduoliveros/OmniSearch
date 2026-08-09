@@ -303,9 +303,16 @@ async function executeResourceAction(item) {
       return;
     } catch (err) {
       console.warn('Error al abrir nativamente via Tauri Shell:', err);
-      // Fallback: copy target to clipboard
-      await navigator.clipboard.writeText(target);
-      showToast(`No se pudo abrir directamente. Ruta copiada al portapapeles`, 'info');
+      const errMsg = (err && typeof err === 'object' && err.message) ? err.message : String(err);
+      
+      // Fallback: If URL, try browser window.open
+      if (targetType === 'url' || target.startsWith('http://') || target.startsWith('https://')) {
+        window.open(target, '_blank');
+        showToast(`Abriendo en navegador web: ${title}`, 'success');
+      } else {
+        await navigator.clipboard.writeText(target);
+        showToast(`Error al abrir (${errMsg}). Ruta copiada al portapapeles.`, 'info');
+      }
       closeCommandPalette();
       return;
     }

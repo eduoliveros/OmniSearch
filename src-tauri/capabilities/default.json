@@ -10,7 +10,11 @@
       "identifier": "shell:allow-open",
       "allow": [
         {
-          "name": "allow-all-paths-and-urls",
+          "name": "allow-all-regex",
+          "path": ".*"
+        },
+        {
+          "name": "allow-all-glob",
           "path": "**"
         }
       ]
