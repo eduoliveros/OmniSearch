@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OmniSearch — Paleta de Comandos Ultrarrápida</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Background Decorative Lights -->
+      <div class="bg-glow bg-glow-1"></div>
+      <div class="bg-glow bg-glow-2"></div>
+
+      <!-- Hero Header -->
+      <header class="app-header">
+        <div class="header-container">
+          <div class="brand">
+            <div class="brand-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <span class="brand-name">OmniSearch</span>
+            <span class="badge">v1.0 Prototipo</span>
+          </div>
+          <div class="header-actions">
+            <button id="btn-add-resource" class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              Nuevo Recurso
+            </button>
+            <button id="btn-manage-data" class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+              Gestionar Datos
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Container -->
+      <main class="main-container">
+        <section class="hero-section">
+          <h1 class="hero-title">Tu centro de mando <br><span class="gradient-text">para todo tu ecosistema</span></h1>
+          <p class="hero-subtitle">
+            Accede al instante a carpetas, documentación HLD, chats de Teams/Slack, notas y contactos clave mediante búsqueda difusa ultrarrápida.
+          </p>
+
+          <!-- Trigger Bar -->
+          <div class="search-trigger-wrapper">
+            <button id="trigger-command-palette" class="search-trigger-btn">
+              <div class="trigger-left">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span>Buscar por palabra clave ("hld uk", "Test", "chat conectividad")...</span>
+              </div>
+              <div class="trigger-shortcut">
+                <kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">K</kbd>
+              </div>
+            </button>
+          </div>
+
+          <!-- Quick Stats / Featured Cards -->
+          <div class="dashboard-grid">
+            <div class="dash-card" id="card-docs">
+              <div class="card-icon icon-blue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="card-info">
+                <h3>Documentación & HLD</h3>
+                <p id="count-docs">Cargando...</p>
+              </div>
+              <button class="card-btn-filter" data-filter="documento">Ver</button>
+            </div>
+
+            <div class="dash-card" id="card-contacts">
+              <div class="card-icon icon-purple">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="card-info">
+                <h3>Contactos Directos</h3>
+                <p id="count-contacts">Cargando...</p>
+              </div>
+              <button class="card-btn-filter" data-filter="contacto">Ver</button>
+            </div>
+
+            <div class="dash-card" id="card-chats">
+              <div class="card-icon icon-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="card-info">
+                <h3>Chats & Canales</h3>
+                <p id="count-chats">Cargando...</p>
+              </div>
+              <button class="card-btn-filter" data-filter="chat">Ver</button>
+            </div>
+
+            <div class="dash-card" id="card-folders">
+              <div class="card-icon icon-amber">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="card-info">
+                <h3>Rutas Locales / Red</h3>
+                <p id="count-folders">Cargando...</p>
+              </div>
+              <button class="card-btn-filter" data-filter="carpeta">Ver</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Native Backdrop & Dialog Command Palette -->
+    <dialog id="command-palette-dialog" class="palette-dialog">
+      <div class="palette-content">
+        <!-- Palette Header / Search Input -->
+        <div class="palette-search-bar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="palette-search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input 
+            type="text" 
+            id="palette-input" 
+            placeholder="Escribe 'hld uk', 'Test', 'chat conectividad' o una palabra clave..." 
+            autocomplete="off" 
+            spellcheck="false"
+          />
+          <button id="palette-clear-btn" class="palette-clear-btn" aria-label="Limpiar búsqueda" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <kbd class="kbd kbd-esc">ESC</kbd>
+        </div>
+
+        <!-- Filter Tags Bar -->
+        <div class="palette-filters">
+          <button class="filter-chip active" data-category="all">Todos</button>
+          <button class="filter-chip" data-category="documento">📄 Documentos</button>
+          <button class="filter-chip" data-category="contacto">👤 Contactos</button>
+          <button class="filter-chip" data-category="chat">💬 Chats & Teams</button>
+          <button class="filter-chip" data-category="carpeta">📁 Carpetas</button>
+          <button class="filter-chip" data-category="web">🌐 Web Links</button>
+        </div>
+
+        <!-- Palette Results Container -->
+        <div class="palette-results-wrapper">
+          <ul id="palette-results" class="palette-results-list" role="listbox">
+            <!-- Dynamically populated -->
+          </ul>
+          <div id="palette-empty" class="palette-empty-state" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <p>No se encontraron resultados para tu búsqueda.</p>
+            <span>Intenta con otras palabras clave o añade un nuevo recurso.</span>
+          </div>
+        </div>
+
+        <!-- Palette Footer with Shortcuts -->
+        <footer class="palette-footer">
+          <div class="shortcut-hints">
+            <span class="hint-item"><kbd class="kbd">↑</kbd> <kbd class="kbd">↓</kbd> Navegar</span>
+            <span class="hint-item"><kbd class="kbd">↵</kbd> Abrir / Ejecutar</span>
+            <span class="hint-item"><kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">C</kbd> Copiar destino</span>
+          </div>
+          <div class="footer-stats">
+            <span id="results-count-text">0 resultados</span>
+          </div>
+        </footer>
+      </div>
+    </dialog>
+
+    <!-- Modal for Adding New Resource -->
+    <dialog id="add-resource-dialog" class="form-dialog">
+      <form id="add-resource-form" class="form-content">
+        <div class="dialog-header">
+          <h2>Añadir Nuevo Recurso al Índice</h2>
+          <button type="button" id="close-add-dialog" class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <div class="form-group">
+            <label for="res-title">Título / Nombre</label>
+            <input type="text" id="res-title" placeholder="Ej: HLD United Kingdom Network Architecture" required />
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="res-category">Tipo de Recurso</label>
+              <select id="res-category" required>
+                <option value="documento">Documento / Especificación</option>
+                <option value="contacto">Contacto / Persona</option>
+                <option value="chat">Chat / Canal (Slack/Teams)</option>
+                <option value="carpeta">Carpeta / Ruta de Archivos</option>
+                <option value="web">Enlace Web / Repositorio</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="res-target-type">Tipo de Destino</label>
+              <select id="res-target-type" required>
+                <option value="url">URL Web (http/https)</option>
+                <option value="file">Ruta de archivo (file:// o C:\...)</option>
+                <option value="deeplink">Deep Link (slack://, msteams://, etc.)</option>
+                <option value="text">Texto / Email / Info</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res-target">Destino / URL / Ruta</label>
+            <input type="text" id="res-target" placeholder="Ej: file:///C:/Proyectos/UK/HLD/ o msteams://l/channel/..." required />
+          </div>
+
+          <div class="form-group">
+            <label for="res-keywords">Palabras Clave / Alias (separadas por coma)</label>
+            <input type="text" id="res-keywords" placeholder="Ej: hld uk, diseño londres, arquitectura uk, test" required />
+          </div>
+
+          <div class="form-group">
+            <label for="res-description">Descripción corta (opcional)</label>
+            <input type="text" id="res-description" placeholder="Ej: Documentación de la infraestructura de red en UK" />
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-add">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar en IndexedDB</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Modal for Editing / Deleting Resource -->
+    <dialog id="edit-resource-dialog" class="form-dialog">
+      <form id="edit-resource-form" class="form-content">
+        <input type="hidden" id="edit-res-id" />
+        <div class="dialog-header">
+          <h2>Editar Recurso</h2>
+          <button type="button" id="close-edit-dialog" class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <div class="form-group">
+            <label for="edit-res-title">Título / Nombre</label>
+            <input type="text" id="edit-res-title" required />
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-res-category">Tipo de Recurso</label>
+              <select id="edit-res-category" required>
+                <option value="documento">Documento / Especificación</option>
+                <option value="contacto">Contacto / Persona</option>
+                <option value="chat">Chat / Canal (Slack/Teams)</option>
+                <option value="carpeta">Carpeta / Ruta de Archivos</option>
+                <option value="web">Enlace Web / Repositorio</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-res-target-type">Tipo de Destino</label>
+              <select id="edit-res-target-type" required>
+                <option value="url">URL Web (http/https)</option>
+                <option value="file">Ruta de archivo (file:// o C:\...)</option>
+                <option value="deeplink">Deep Link (slack://, msteams://, etc.)</option>
+                <option value="text">Texto / Email / Info</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-res-target">Destino / URL / Ruta</label>
+            <input type="text" id="edit-res-target" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-res-keywords">Palabras Clave / Alias (separadas por coma)</label>
+            <input type="text" id="edit-res-keywords" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-res-description">Descripción corta (opcional)</label>
+            <input type="text" id="edit-res-description" />
+          </div>
+        </div>
+        <div class="dialog-footer edit-dialog-footer">
+          <button type="button" class="btn btn-danger" id="btn-delete-resource">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            Eliminar Recurso
+          </button>
+          <div class="edit-footer-right">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-edit">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Modal for Data Management (Import / Export / Reset) -->
+    <dialog id="manage-data-dialog" class="form-dialog">
+      <div class="form-content">
+        <div class="dialog-header">
+          <h2>Gestión de Datos Local (IndexedDB)</h2>
+          <button type="button" id="close-manage-dialog" class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <p class="text-sm">Todos los atajos se guardan en la base de datos local de tu navegador (IndexedDB) para una velocidad instantánea sin servidores externos.</p>
+          
+          <div class="data-actions-grid">
+            <div class="data-action-box">
+              <h4>Exportar Índice</h4>
+              <p>Descarga un archivo JSON con todos tus atajos y recursos registrados.</p>
+              <button id="btn-export-json" class="btn btn-secondary">Descargar JSON</button>
+            </div>
+            
+            <div class="data-action-box">
+              <h4>Importar JSON</h4>
+              <p>Carga recursos desde un archivo JSON estructurado.</p>
+              <input type="file" id="import-json-file" accept=".json" hidden />
+              <button id="btn-import-json" class="btn btn-secondary">Seleccionar Archivo</button>
+            </div>
+
+            <div class="data-action-box danger">
+              <h4>Restablecer Datos</h4>
+              <p>Restaura la base de datos a los datos de prueba predeterminados ("hld uk", "Test", etc.).</p>
+              <button id="btn-reset-db" class="btn btn-danger">Restablecer Semilla</button>
+            </div>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-secondary" id="btn-close-manage">Cerrar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

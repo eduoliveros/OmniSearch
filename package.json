@@ -1,0 +1,19 @@
+{
+  "name": "omnisearch",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.2.0"
+  },
+  "dependencies": {
+    "fuse.js": "^7.5.0",
+    "localforage": "^1.10.0",
+    "lucide": "^1.30.0"
+  }
+}
