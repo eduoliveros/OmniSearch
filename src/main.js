@@ -275,7 +275,11 @@ function getActionText(targetType) {
 }
 
 // Detect if running in Tauri Desktop environment
-const isTauriDesktop = typeof window !== 'undefined' && (window.__TAURI_INTERNALS__ !== undefined || window.__TAURI__ !== undefined);
+const isTauriDesktop = typeof window !== 'undefined' && (
+  window.__TAURI_INTERNALS__ !== undefined || 
+  window.__TAURI__ !== undefined || 
+  window.__TAURI_IPC__ !== undefined
+);
 
 // Execute Action when selected (Enter or Click)
 async function executeResourceAction(item) {
@@ -289,7 +293,7 @@ async function executeResourceAction(item) {
     await db.setItem('omnisearch_resources', resources);
   }
 
-  // If running in Tauri Desktop, use native OS shell open
+  // If running in Tauri Desktop, use native OS shell open (for URLs, local folders, files, and deep links)
   if (isTauriDesktop) {
     try {
       const { open } = await import('@tauri-apps/plugin-shell');
@@ -298,7 +302,12 @@ async function executeResourceAction(item) {
       closeCommandPalette();
       return;
     } catch (err) {
-      console.warn('Fallback a comportamiento web:', err);
+      console.warn('Error al abrir nativamente via Tauri Shell:', err);
+      // Fallback: copy target to clipboard
+      await navigator.clipboard.writeText(target);
+      showToast(`No se pudo abrir directamente. Ruta copiada al portapapeles`, 'info');
+      closeCommandPalette();
+      return;
     }
   }
 

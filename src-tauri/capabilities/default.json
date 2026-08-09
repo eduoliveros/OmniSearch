@@ -6,6 +6,14 @@
   "permissions": [
     "core:default",
     "shell:default",
-    "shell:allow-open"
+    {
+      "identifier": "shell:allow-open",
+      "allow": [
+        {
+          "name": "allow-all-paths-and-urls",
+          "path": "**"
+        }
+      ]
+    }
   ]
 }
